@@ -111,17 +111,29 @@ public class IntegerAggregator implements Aggregator {
                     tup.setField(0, new StringField(groupVal.toString(), Type.STRING_LEN));
             }
             switch (this.op) {
-                case MIN -> tup.setField(aggField, new IntField(aggFields.min));
-                case MAX -> tup.setField(aggField, new IntField(aggFields.max));
-                case SUM -> tup.setField(aggField, new IntField(aggFields.sum));
-                case COUNT -> tup.setField(aggField, new IntField(aggFields.count));
-                case AVG -> tup.setField(aggField, new IntField(aggFields.sum / aggFields.count));
-                case SUM_COUNT -> {
+                case MIN:
+                    tup.setField(aggField, new IntField(aggFields.min));
+                    break;
+                case MAX:
+                    tup.setField(aggField, new IntField(aggFields.max));
+                    break;
+                case SUM:
                     tup.setField(aggField, new IntField(aggFields.sum));
-                    tup.setField(aggField + 1, new IntField(aggFields.count));
+                    break;
+                case COUNT:
+                    tup.setField(aggField, new IntField(aggFields.count));
+                    break;
+                case AVG:
+                    tup.setField(aggField, new IntField(aggFields.sum / aggFields.count));
+                    break;
+                case SUM_COUNT:
+                    tup.setField(aggField, new IntField(aggFields.sum));
+                    tup.setField(aggField+1, new IntField(aggFields.count));
+                    break;
+                case SC_AVG:
+                    tup.setField(aggField, new IntField(aggFields.sum / aggFields.sumCount));
+                    break;
                 }
-                case SC_AVG -> tup.setField(aggField, new IntField(aggFields.sum / aggFields.sumCount));
-            }
 
             result.add(tup);
         }
