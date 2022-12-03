@@ -1,0 +1,30 @@
+CS660 PA4 Write-up
+Jiahe Zhang
+
+Class Design:
+In this section, we are introduced with the query optimiser and histograms as data visualization structure.
+
+
+> IntHistogram: In this class, I used several arrays to take track of data for each bucket. The difficulty
+    to implement this class was the progress to identify the selectivity for different operators. Fortunit-
+    ely, the <= and >= operators are combinations of '<' with '=' and '>' with '='. Thus, I implemented
+    two helper functions to help determining the selectivity of inequality/equality operations.
+
+> TableStats: In this class, the most complicated part was the constructor, which is given. It took me some
+    time to fully understand how this constructor works. Mainly was that we have to loop through the table
+    multiple times to initiate and update the values in the table with the histogram data.
+    The rest methods are easy to understand. They are implemented using the methods implemented in IntHisto-
+    gram class.
+
+> JoinOptimiser: In this class, we are mainly asked to implement the orderJoins() method. To do so, I first
+    took some time to understand the PlanCache and CostCard classes. Then, use the provided method
+    computeCostAndCardOfSubplan to compute the cost for each plan.
+
+
+I spent a few days working on the project. The instructions are clear, and word load is evenly distributed.
+The difficulties are mainly appearing in the IntHistogram class and JoinOptimiser class. In IntHistogram
+class, I faced the problem with indexing while selecting the right bucket when implementing cases with the
+LESS_THAN operator, which took some effort to debug.
+In JoinOptimiser class, I had 2 tests that I could't pass initially. Lately I found that I did not fully under-
+stand the function estimateJoinCost() and estimateJoinCardinality(). I researched about these two functions
+and fixed the bug by adding code corresponding to all cases given t1pkey and t2pkey.
