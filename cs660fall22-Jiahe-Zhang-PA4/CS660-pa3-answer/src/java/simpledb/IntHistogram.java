@@ -65,14 +65,22 @@ public class IntHistogram {
     	// some code goes here
         int bucket = (v - this.min)/this.mod;
         // the cases are different operators, they are GREATER_THAN_OR_EQ, GREATER_THAN
-        return switch (op) {
-            case EQUALS, LIKE -> setBuckets(bucket);
-            case GREATER_THAN, LESS_THAN -> setBucketsNeq(bucket, op, v);
-            case GREATER_THAN_OR_EQ -> setBuckets(bucket) + setBucketsNeq(bucket, Predicate.Op.GREATER_THAN, v);
-            case LESS_THAN_OR_EQ -> setBuckets(bucket) + setBucketsNeq(bucket, Predicate.Op.LESS_THAN, v);
-            case NOT_EQUALS -> 1.0 - setBuckets(bucket);
-            default -> -1.0;
-        };
+        switch (op) {
+            case EQUALS: 
+            case LIKE:
+                return setBuckets(bucket);
+            case GREATER_THAN:
+            case LESS_THAN:
+                return setBucketsNeq(bucket, op, v);
+            case GREATER_THAN_OR_EQ:
+                return setBuckets(bucket) + setBucketsNeq(bucket, Predicate.Op.GREATER_THAN, v);
+            case LESS_THAN_OR_EQ:
+                return setBuckets(bucket) + setBucketsNeq(bucket, Predicate.Op.LESS_THAN, v);
+            case NOT_EQUALS:
+                return 1.0 - setBuckets(bucket);
+            default:
+                return -1.0;
+        }
     }
     private double setBuckets(int bucket){
         if (bucket < 0 || bucket >= this.num_buckets)
